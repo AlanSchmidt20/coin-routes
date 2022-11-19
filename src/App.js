@@ -14,10 +14,12 @@ function App() {
       <div className="App-header">
         <Dropdown handleChange={handleChange} value={coin} />
         <div
+          className="wrapper"
           style={{
-            display: "flex",
+            /*             display: "flex",
             justifyContent: "space-between",
-            width: "100%",
+            width: "100%", */
+            backgroundColor: "#282c34",
           }}
         >
           <div>

@@ -45,7 +45,7 @@ const CoinChart = ({ coin }) => {
       margin={{
         top: 15,
         right: 30,
-        left: 90,
+        left: 80,
         bottom: 5,
       }}
     >

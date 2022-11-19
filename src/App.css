@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  width: 100%;
 }
 
 .App-logo {
@@ -37,8 +38,10 @@
   }
 }
 
-.dropdown--parent {
-  float: left;
+.wrapper {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
 }
 
 .table--parent {
@@ -53,4 +56,12 @@
 
 .price--cell {
   color: red;
+}
+@media screen and (max-width: 600px) {
+  .wrapper {
+    display: block;
+  }
+  .table--child {
+    display: block;
+  }
 }
