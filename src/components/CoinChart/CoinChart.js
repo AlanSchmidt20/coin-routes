@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { LineChart, Line, XAxis, YAxis, Tooltip, Legend } from "recharts";
 
-const CoinChart = () => {
+const CoinChart = ({ coin }) => {
   const [priceData, setPriceData] = useState([]);
 
   useEffect(() => {
     const subscribe = {
       type: "subscribe",
-      product_ids: ["BTC-USD"],
+      product_ids: [coin],
       channels: ["level2"],
     };
     const ws = new WebSocket("wss://ws-feed.exchange.coinbase.com");
@@ -33,6 +33,10 @@ const CoinChart = () => {
     };
   }, [priceData]);
 
+  useEffect(() => {
+    setPriceData([]);
+  }, [coin]);
+
   return (
     <LineChart
       width={650}
@@ -45,7 +49,7 @@ const CoinChart = () => {
         bottom: 5,
       }}
     >
-      <XAxis />
+      <XAxis domain={["dataMin", "dataMax"]} />
       <YAxis type="number" domain={["dataMin", "dataMax"]} />
       <Tooltip />
       <Legend />

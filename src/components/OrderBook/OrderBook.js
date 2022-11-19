@@ -28,20 +28,13 @@ const OrderBook = ({ coin }) => {
     ws.onmessage = (event) => {
       const response = JSON.parse(event.data);
 
-      response?.changes?.map((change) => {
-        change[0] === "buy"
-          ? setBids([
-              ...bids.slice(0, 5),
-              { price: change[1], size: change[2] },
-            ])
-          : setAsks([
-              ...asks.slice(0, 5),
-              { price: change[1], size: change[2] },
-            ]);
-
-        const filtered = change.filter((isPositive) => isPositive != 0);
-        /* console.log(filtered); */
-      });
+      response?.changes
+        ?.filter((value) => value[2] > 0)
+        .forEach((change) => {
+          change[0] === "buy"
+            ? setBids([...bids, { price: change[1], size: change[2] }])
+            : setAsks([...asks, { price: change[1], size: change[2] }]);
+        });
     };
     ws.onclose = () => {
       ws.close();
@@ -57,7 +50,6 @@ const OrderBook = ({ coin }) => {
     setBids([]);
     setAsks([]);
   }, [coin]);
-  console.log(bids);
   return (
     <TableContainer component={Paper} className="table--parent">
       <Table
@@ -72,19 +64,22 @@ const OrderBook = ({ coin }) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {bids?.map((bid, index) => {
-            return (
-              <TableRow
-                key={index}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-              >
-                <TableCell sx={{ color: "error.main" }} align="center">
-                  {bid.price}
-                </TableCell>
-                <TableCell align="center">{bid.size}</TableCell>
-              </TableRow>
-            );
-          })}
+          {bids
+            ?.map((bid, index) => {
+              return (
+                <TableRow
+                  key={index}
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                >
+                  <TableCell sx={{ color: "success.main" }} align="center">
+                    {bid.price}
+                  </TableCell>
+                  <TableCell align="center">{bid.size}</TableCell>
+                </TableRow>
+              );
+            })
+            .reverse()
+            .slice(0, 5)}
         </TableBody>
       </Table>
       <Table
@@ -99,19 +94,22 @@ const OrderBook = ({ coin }) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {asks?.map((asks, index) => {
-            return (
-              <TableRow
-                key={index}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-              >
-                <TableCell sx={{ color: "success.main" }} align="center">
-                  {asks.price}
-                </TableCell>
-                <TableCell align="center">{asks.size}</TableCell>
-              </TableRow>
-            );
-          })}
+          {asks
+            ?.map((asks, index) => {
+              return (
+                <TableRow
+                  key={index}
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                >
+                  <TableCell sx={{ color: "error.main" }} align="center">
+                    {asks.price}
+                  </TableCell>
+                  <TableCell align="center">{asks.size}</TableCell>
+                </TableRow>
+              );
+            })
+            .reverse()
+            .slice(0, 5)}
         </TableBody>
       </Table>
     </TableContainer>

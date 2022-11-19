@@ -21,7 +21,7 @@ function App() {
           }}
         >
           <div>
-            <CoinChart />
+            <CoinChart coin={coin} />
           </div>
           <div style={{ alignItems: "flex-end" }}>
             <OrderBook coin={coin} />
